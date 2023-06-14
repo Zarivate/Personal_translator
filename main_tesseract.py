@@ -2,6 +2,14 @@ import pytesseract
 from pytesseract import Output
 import cv2
 import numpy as np
+import deepl
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+auth_key = os.getenv("DEEPL_AUTH_APIKEY")
+translator = deepl.Translator(auth_key)
 
 # Works well with all real life images, document snippet example, but only properly on example 6 for game snippets
 img = cv2.imread("examples/example_12.jpg")
@@ -61,11 +69,6 @@ def deskew(image):
         image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE
     )
     return rotated
-
-
-# template matching
-def match_template(image, template):
-    return cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
 
 
 # Custom recommended Japanese settings from documentation found here: https://tesseract-ocr.github.io/tessdoc/tess3/ControlParams.html
@@ -128,39 +131,53 @@ def display_characters(img, data, n_boxes):
     cv2.waitKey(0)
 
 
+# Function to make a call to DeepL API and return translated text
+def translate(text):
+    result = translator.translate_text(
+        text,
+        source_lang="JA",
+        target_lang="EN-US",
+    )
+    return result.text
+
+
 # Example with no preprocessing
-print(
-    "Result with no preprocessing is \n"
-    + pytesseract.image_to_string(img, lang="jpn", config=custom_config)
-    + "\n"
-)
+output_normal = pytesseract.image_to_string(img, lang="jpn", config=custom_config)
+print("Result with no preprocessing is \n" + output_normal + "\n")
 data_normal = pytesseract.image_to_data(
     img, lang="jpn", config=custom_config, output_type=Output.DICT
 )
-n_boxes_normal = len(data_normal["text"])
-display_characters(img, data_normal, n_boxes_normal)
-
-# for char in d['text']:
-#     print(char)
+print("Translated it becomes \n" + translate(output_normal))
+display_characters(img, data_normal, len(data_normal["text"]))
 
 
 # Example with grayscale preprocessing
-print(
-    "Result with grayscale preprocessing is \n"
-    + pytesseract.image_to_string(gray, lang="jpn", config=custom_config)
-)
+output_gray = pytesseract.image_to_string(gray, lang="jpn", config=custom_config)
+print("Result with grayscale preprocessing is \n" + output_gray + "\n")
 data_gray = pytesseract.image_to_data(
     gray, lang="jpn", config=custom_config, output_type=Output.DICT
 )
-
+print("Translated text is \n" + translate(output_gray))
 display_characters(gray, data_gray, len(data_gray["text"]))
 
+
 # Example with noise removal preprocessing
-# print("Result with noise removal preprocessing is \n" + pytesseract.image_to_string(noise_removal_image, lang='jpn', config=custom_config))
+output_noise = pytesseract.image_to_string(
+    noise_removal_image, lang="jpn", config=custom_config
+)
+print("Result with noise removal preprocessing is \n" + output_noise)
+data_noise = pytesseract.image_to_data(
+    noise_removal_image, lang="jpn", config=custom_config, output_type=Output.DICT
+)
+print("Translated text is \n" + translate(output_noise))
+display_characters(noise_removal_image, data_noise, len(data_noise["text"]))
 
 
 # Example with threshold preprocessing
-# print("Result with threshold preprocessing is \n" + pytesseract.image_to_string(threshed_image, lang='jpn', config=custom_config))
+print(
+    "Result with threshold preprocessing is \n"
+    + pytesseract.image_to_string(threshed_image, lang="jpn", config=custom_config)
+)
 
 
 # Example with dilation preprocessing

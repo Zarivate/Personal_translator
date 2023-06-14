@@ -3,7 +3,6 @@
 
 import argparse
 import cv2
-import deepl
 
 # A list of references points (x, y) specifying region to crop from image
 refPt = []

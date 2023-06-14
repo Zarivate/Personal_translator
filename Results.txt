@@ -18,6 +18,7 @@ Dependencies so far:
     - pip install pytesseract
     - pip install cv2
     - pip install --upgrade deepl
+    - pip install python-dotenv
 
 
 Important Notes:
