@@ -4,8 +4,9 @@ import cv2
 import numpy as np
 
 # Works well with all real life images, document snippet example, but only properly on example 6 for game snippets
-img = cv2.imread('examples/example_6.jpg')
+img = cv2.imread('examples/example_12.jpg')
 
+# Functions to adjust image for better readability
 # get grayscale image
 def get_grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -57,7 +58,8 @@ def match_template(image, template):
 
 
 # Custom recommended Japanese settings from documentation found here: https://tesseract-ocr.github.io/tessdoc/tess3/ControlParams.html 
-# Overall page sementation method (psm) 6 seems to work best overall.
+# Overall page sementation method (psm) 6 seems to work best overall. 
+# TODO: Add a feature where can detect orientation of text so can swap to vertical japanese, 'jpn-vert'
 custom_config = r'''--oem 3 --psm 6 -c 
 edges_max_children_per_outline=40 
 chop_enable=T 
@@ -70,44 +72,44 @@ textord_force_make_prop_words=F'''
 
 # Preprocess the images using the various methods for greater accuracy
 gray = get_grayscale(img)
-noise_removal_image = remove_noise(gray)
-threshed_image = thresholding(gray)
-dilation_image = dilate(gray)
-erosion_image = erode(img)
-opening_image = opening(img)
-canny_image = canny(img)
-skew_corrected_image = deskew(gray)
+#noise_removal_image = remove_noise(gray)
+#threshed_image = thresholding(gray)
+#dilation_image = dilate(gray)
+#erosion_image = erode(img)
+#opening_image = opening(img)
+#canny_image = canny(img)
+#skew_corrected_image = deskew(gray)
+
+
+# Function to display the characters found alongside their confidence scores
+def display_characters(img, data, n_boxes):
+    for i in range(n_boxes):
+        if int(data['conf'][i]) > 60:
+            (x, y, w, h) = (data['left'][i], data['top'][i], data['width'][i], data['height'][i])
+            img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            img = cv2.putText(img, data['text'][i], (x, y+h+20), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2, cv2.LINE_AA)
+            img = cv2.putText(img, str(data['conf'][i]), (x, y+h+20), cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2, cv2.LINE_AA)
+
+    cv2.imshow('img', img)
+    cv2.waitKey(0)
 
 
 
 # Example with no preprocessing
-print("Result with no preprocessing is \n" + pytesseract.image_to_string(img, lang='jpn', config=custom_config))
-# Get the words found and print bounding boxes for them
-# d = pytesseract.image_to_data(img, output_type=Output.DICT)
-# n_boxes = len(d['text'])
-# for i in range(n_boxes):
-#     if int(d['conf'][i]) > 60:
-#         (x, y, w, h) = (d['left'][i], d['top'][i], d['width'][i], d['height'][i])
-#         img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+print("Result with no preprocessing is \n" + pytesseract.image_to_string(img, lang='jpn', config=custom_config) + "\n")
+data_normal = pytesseract.image_to_data(img, lang='jpn', config=custom_config, output_type=Output.DICT)
+n_boxes_normal = len(data_normal['text'])
+display_characters(img, data_normal, n_boxes_normal)
 
-# cv2.imshow('img', img)
-# cv2.waitKey(0)
-
-# Get the characters found and print bounding boxes out for them
-h, w, c = img.shape
-boxes = pytesseract.image_to_boxes(img) 
-for b in boxes.splitlines():
-    b = b.split(' ')
-    img = cv2.rectangle(img, (int(b[1]), h - int(b[2])), (int(b[3]), h - int(b[4])), (0, 255, 0), 2)
-
-cv2.imshow('img', img)
-cv2.waitKey(0)
-
+# for char in d['text']:
+#     print(char)
 
 
 # Example with grayscale preprocessing
-# print("Result with grayscale preprocessing is \n" + pytesseract.image_to_string(gray, lang='jpn', config=custom_config))
+print("Result with grayscale preprocessing is \n" + pytesseract.image_to_string(gray, lang='jpn', config=custom_config))
+data_gray = pytesseract.image_to_data(gray, lang='jpn', config=custom_config, output_type=Output.DICT)
 
+display_characters(gray, data_gray, len(data_gray['text']) )
 
 # Example with noise removal preprocessing
 # print("Result with noise removal preprocessing is \n" + pytesseract.image_to_string(noise_removal_image, lang='jpn', config=custom_config))
@@ -137,8 +139,15 @@ cv2.waitKey(0)
 # print("Result with skew correction preprocessing is \n" + pytesseract.image_to_string(skew_corrected_image, lang='jpn', config=custom_config))
 
 
+# Get the characters found and print bounding boxes out for them
+# h, w, c = img.shape
+# boxes = pytesseract.image_to_boxes(img) 
+# for b in boxes.splitlines():
+#     b = b.split(' ')
+#     img = cv2.rectangle(img, (int(b[1]), h - int(b[2])), (int(b[3]), h - int(b[4])), (0, 255, 0), 2)
 
-
+# cv2.imshow('img', img)
+# cv2.waitKey(0)
 
 
 

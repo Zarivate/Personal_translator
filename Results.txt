@@ -1,0 +1,25 @@
+With Tesseract:
+    - Character Recognition
+        Example6.jpg
+        Recognizes characters properly and places boxes around them. Places boxes around the UI buttons but is fine.
+        
+        Example7.jpg
+        Recognizes some of the characters and places box around entire image, testing out improvements by putting 
+        greater focus on characters.
+
+        Example7_2.jpg
+        Recognizes even less, still places box around entire image window instead of just the specific characters.
+
+
+
+Dependencies so far:
+    - Tesseract, download guide can be found here https://tesseract-ocr.github.io/tessdoc/Installation.html.
+        - Japanese and Vertical Japanese scripts need to be downloaded in window when it pops up
+    - pip install pytesseract
+    - pip install cv2
+    - pip install --upgrade deepl
+
+
+Important Notes:
+    - Found that page segmentation 6, psm6, tends to work best but not always
+
