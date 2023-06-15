@@ -1,31 +1,35 @@
-# This file is ment to run first and have the user set a custom sized box for where they want the tesseract OCR
-# to run. Currently only works by taking in an image first. Will be adjusted later.
-
-import argparse
 import cv2
+import numpy as np
 
-# A list of references points (x, y) specifying region to crop from image
-refPt = []
+# Set image path
+img_path = "examples/example_12.jpg"
 
-# Boolean to indicate whether cropping or not
-cropping = False
+# Read image
+img_raw = cv2.imread(img_path)
 
+# Create window called "select crop sections" where user can select multipl ROIs
+ROIs = cv2.selectROIs("Select crop sections", img_raw)
 
-def click_and_crop(event, x, y, flags, param):
-    # grab references to the global variables
-    global refPt, cropping
-    # if the left mouse button was clicked, record the starting
-    # (x, y) coordinates and indicate that cropping is being
-    # performed
-    if event == cv2.EVENT_LBUTTONDOWN:
-        refPt = [(x, y)]
-        cropping = True
-    # check to see if the left mouse button was released
-    elif event == cv2.EVENT_LBUTTONUP:
-        # record the ending (x, y) coordinates and indicate that
-        # the cropping operation is finished
-        refPt.append((x, y))
-        cropping = False
-        # draw a rectangle around the region of interest
-        cv2.rectangle(image, refPt[0], refPt[1], (0, 255, 0), 2)
-        cv2.imshow("image", image)
+# Print rectangle points of selected roi
+print(ROIs)
+
+# Created a variable to increment that represents the current number of the cropped image
+crop_number = 0
+
+# Loop through every crop created and stored within ROIs
+for crop in ROIs:
+    # Get the 4 points/regions of interest from the drawn rectangle on the image
+    x1 = crop[0]
+    y1 = crop[1]
+    x2 = crop[2]
+    y2 = crop[3]
+
+    # Crop selected roi from raw image
+    img_cropped = img_raw[y1 : y1 + y2, x1 : x1 + x2]
+    # Create a window of the cropped image with a name corresponding to which sequential crop it was
+    cv2.imshow("crop" + str(crop_number) + ".jpg", img_cropped)
+    # Create and save the cropped image in the example_outputs folder with a corresponding numnbered name
+    cv2.imwrite("example_outputs/crop" + str(crop_number) + ".jpg", img_cropped)
+    # Increment the crop number so following, if there is any more, cropped images can be correctly numbered
+    crop_number += 1
+cv2.waitKey(0)

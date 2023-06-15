@@ -11,6 +11,17 @@ With Tesseract:
         Recognizes even less, still places box around entire image window instead of just the specific characters.
 
 
+    - Optimization methods
+        Skew correction:
+        Not for the best with horizontal images, maybe better for non horizontally oriented images
+
+        Canny edge detection:
+        Changes some words entirely
+
+        Dilation:
+        Changes and makes some words completel unrecognizable
+
+
 
 Dependencies so far:
     - Tesseract, download guide can be found here https://tesseract-ocr.github.io/tessdoc/Installation.html.

@@ -31,7 +31,7 @@ def read_text(image_name, model_name, in_line=True):
     return "\n".join(text)
 
 
-jp_example_1 = read_text("examples/example_8.jpg", reader_en_ja)
+jp_example_1 = read_text("examples/example_12.jpg", reader_en_ja)
 print("\n" + jp_example_1)
 
 print("Elapsed time:", t1_stop, t1_start)

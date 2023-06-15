@@ -18,39 +18,39 @@ skew_corrected_image = deskew(gray)
 
 
 # Example with no preprocessing
-print_results(img)
+print_results(img, "no preprocessing")
 
 
-# Example with grayscale preprocessing
-print_results(gray)
+# # Example with grayscale preprocessing
+# print_results(gray, "grayscale")
 
 
-# Example with noise removal preprocessing
-print_results(noise_removal_image)
+# # Example with noise removal preprocessing
+# print_results(noise_removal_image, "noise removal")
 
 
-# Example with threshold preprocessing
-print_results(threshed_image)
+# # Example with threshold preprocessing
+# print_results(threshed_image, "thresholding")
 
 
-# Example with dilation preprocessing
-print_results(dilation_image)
+# # Example with dilation preprocessing
+# # print_results(dilation_image, "dilation")
 
 
-# Example with erosion preprocessing
-print_results(erosion_image)
+# # Example with erosion preprocessing
+# print_results(erosion_image, "erosion")
 
 
 # Example with opening preprocessing
-print_results(opening_image)
+# print_results(opening_image, "opening")
 
 
 # Example with canny edge detection preprocessing
-print_results(canny_image)
+# print_results(canny_image, "canny edge detection")
 
 
 # Example with skew correction preprocessing
-print_results(skew_corrected_image)
+# print_results(canny_image, "skew correction")
 
 
 # Get the characters found and print bounding boxes out for them

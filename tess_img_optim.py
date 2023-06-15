@@ -87,6 +87,16 @@ def get_tess_data(img):
     )
 
 
+# Function to just print out the list of characters found, was how discovered wasn't displaying the discovered characters correctly
+def print_chars(img):
+    result = pytesseract.image_to_data(
+        img, lang="jpn", config=custom_config, output_type=Output.DICT
+    )
+    # Print out every character in the 'text' array within the result matrix, all on the same line due to "end="""
+    for i in range(len(result["text"])):
+        print(result["text"][i], end="")
+
+
 # Function to display the characters found alongside their confidence scores
 def display_characters(img, data, n_boxes):
     for i in range(n_boxes):
@@ -99,16 +109,18 @@ def display_characters(img, data, n_boxes):
                 data["height"][i],
             )
             img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            img = cv2.putText(
-                img,
-                data["text"][i],
-                (x, y + h + 20),
-                cv2.FONT_HERSHEY_COMPLEX,
-                0.7,
-                (0, 255, 0),
-                2,
-                cv2.LINE_AA,
-            )
+            # It just puts question marks on any Japanese characters, even if the characters print correctly in the run console so ignore for now
+            # TODO: Look into why this is and see if there's a possible fix
+            # img = cv2.putText(
+            #     img,
+            #     data["text"][i],
+            #     (x, y + h + 20),
+            #     cv2.FONT_HERSHEY_COMPLEX,
+            #     0.7,
+            #     (0, 255, 0),
+            #     2,
+            #     cv2.LINE_AA,
+            # )
             img = cv2.putText(
                 img,
                 str(data["conf"][i]),
@@ -126,9 +138,9 @@ def display_characters(img, data, n_boxes):
 
 # Function to print the captured text from tesseract alongside it's translation and display the
 # image with bounding boxes and confidence scores drawn on.
-def print_results(img):
+def print_results(img, type):
     output_tess = get_tess_string(img)
-    print("Result with no preprocessing is \n" + output_tess + "\n")
+    print("Result with " + type + " is \n" + output_tess + "\n")
     print("Translated it becomes \n" + translate(output_tess))
 
     data_normal = get_tess_data(img)
