@@ -8,9 +8,11 @@ from deepl_api_call import *
 
 
 # Custom recommended Japanese settings from documentation found here: https://tesseract-ocr.github.io/tessdoc/tess3/ControlParams.html
-# Overall page sementation method (psm) 6 seems to work best overall.
+# Overall page sementation method (psm) 6 seems to work best overall for horizontal text. 5 works best for vertical although sometimes if
+# image is too low res won't capture anything. TODO: Test out lower res crops with opimization methods.
 # TODO: Add a feature where can detect orientation of text so can swap to vertical japanese, 'jpn-vert'
-custom_config = r"""--oem 3 --psm 6 -c 
+# Tesseract options can be found in detail here: https://muthu.co/all-tesseract-ocr-options/
+custom_config = r"""--oem 3 --psm 5 -c 
 edges_max_children_per_outline=40 
 chop_enable=T 
 use_new_state_cost=F 
@@ -18,6 +20,10 @@ segment_segcost_rating=F
 enable_new_segsearch=0 
 language_model_ngram_on=0 
 textord_force_make_prop_words=F"""
+
+# Want to make sure all output text is on a single line for best translation so making list that holds which characters
+# to remove. Will need to replace any white space and new lines with ""
+chars_remove = [" ", "\n"]
 
 
 # Functions to adjust image for better readability
@@ -78,19 +84,22 @@ def deskew(image):
 
 # Function to get the regular tesseract output
 def get_tess_string(img):
-    return pytesseract.image_to_string(img, lang="jpn", config=custom_config)
+    result = pytesseract.image_to_string(img, lang="jpn_vert", config=custom_config)
+    for char in chars_remove:
+        result = result.replace(char, "")
+    return result
 
 
 def get_tess_data(img):
     return pytesseract.image_to_data(
-        img, lang="jpn", config=custom_config, output_type=Output.DICT
+        img, lang="jpn_vert", config=custom_config, output_type=Output.DICT
     )
 
 
 # Function to just print out the list of characters found, was how discovered wasn't displaying the discovered characters correctly
 def print_chars(img):
     result = pytesseract.image_to_data(
-        img, lang="jpn", config=custom_config, output_type=Output.DICT
+        img, lang="jpn_vert", config=custom_config, output_type=Output.DICT
     )
     # Print out every character in the 'text' array within the result matrix, all on the same line due to "end="""
     for i in range(len(result["text"])):

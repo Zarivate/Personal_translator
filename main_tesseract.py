@@ -1,24 +1,28 @@
-import cv2
 from tess_img_optim import *
+from user_box import *
 
 
 # Test image
-img = cv2.imread("examples/example_12.jpg")
+img_path = "examples/example_12.jpg"
 
+get_image_data(img_path)
+
+get_monitor_info()
 
 # Preprocess the images using the various methods in tess_img_optim for greater accuracy
-gray = get_grayscale(img)
-noise_removal_image = remove_noise(gray)
-threshed_image = thresholding(gray)
-dilation_image = dilate(gray)
-erosion_image = erode(img)
-opening_image = opening(img)
-canny_image = canny(img)
-skew_corrected_image = deskew(gray)
+# gray = get_grayscale(img)
+# noise_removal_image = remove_noise(gray)
+# threshed_image = thresholding(gray)
+# dilation_image = dilate(gray)
+# erosion_image = erode(img)
+# opening_image = opening(img)
+# canny_image = canny(img)
+# skew_corrected_image = deskew(gray)
 
+# print(get_tess_string(img))
 
 # Example with no preprocessing
-print_results(img, "no preprocessing")
+# print_results(img, "no preprocessing")
 
 
 # # Example with grayscale preprocessing
@@ -34,7 +38,7 @@ print_results(img, "no preprocessing")
 
 
 # # Example with dilation preprocessing
-# # print_results(dilation_image, "dilation")
+# print_results(dilation_image, "dilation")
 
 
 # # Example with erosion preprocessing
@@ -50,7 +54,7 @@ print_results(img, "no preprocessing")
 
 
 # Example with skew correction preprocessing
-# print_results(canny_image, "skew correction")
+# print_results(skew_corrected_image, "skew correction")
 
 
 # Get the characters found and print bounding boxes out for them
