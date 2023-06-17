@@ -3,7 +3,7 @@ from user_box import *
 
 
 # Test image
-img_path = "examples/example_1.jpg"
+img_path = "examples/example_10.jpg"
 
 img = set_image(img_path)
 # Preprocess the images using the various methods in tess_img_optim for greater accuracy
@@ -17,7 +17,7 @@ canny_image = canny(img)
 skew_corrected_image = deskew(gray)
 
 # Example with no preprocessing
-# crop_start(img, "no preprocessing")
+crop_start(img, "no preprocessing")
 
 
 # # Example with grayscale preprocessing
@@ -47,7 +47,7 @@ skew_corrected_image = deskew(gray)
 
 # Example with opening preprocessing
 # print_results(opening_image, "opening")
-crop_start(opening_image, "opening")
+# crop_start(opening_image, "opening")
 
 
 # Example with canny edge detection preprocessing

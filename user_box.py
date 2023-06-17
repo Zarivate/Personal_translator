@@ -32,10 +32,13 @@ def crop_start(img, type):
 def get_image_data(img):
     # Get the height, width, and channel. If the channel is 3 then it's an RGB(color) image, else it's grayscale/monochrome
     # https://stackoverflow.com/questions/23660929/how-to-check-whether-a-jpeg-image-is-color-or-gray-scale-using-only-python-stdli
-    print(img.shape[0])
-    img_w = img.shape[0]
-    img_h = img.shape[1]
+    img_w = img.shape[1]
+    print(img_w)
+
+    img_h = img.shape[0]
     monitor = get_monitor_info()
+    print(get_monitor_info())
+    print(monitor[0])
     # Check to see if the image width or height is larger than the monitor's dimensions, if so resize it before continuing
     if img_w > monitor[0]:
         # Set the width to be the exact heigh of the monitor's width by subtracting the difference of the two from it
