@@ -3,50 +3,51 @@ from user_box import *
 
 
 # Test image
-img_path = "examples/example_12.jpg"
+img_path = "examples/example_1.jpg"
 
-get_image_data(img_path)
-
-get_monitor_info()
-
+img = set_image(img_path)
 # Preprocess the images using the various methods in tess_img_optim for greater accuracy
-# gray = get_grayscale(img)
-# noise_removal_image = remove_noise(gray)
-# threshed_image = thresholding(gray)
-# dilation_image = dilate(gray)
-# erosion_image = erode(img)
-# opening_image = opening(img)
-# canny_image = canny(img)
-# skew_corrected_image = deskew(gray)
-
-# print(get_tess_string(img))
+gray = get_grayscale(img)
+noise_removal_image = remove_noise(gray)
+threshed_image = thresholding(gray)
+dilation_image = dilate(gray)
+erosion_image = erode(img)
+opening_image = opening(img)
+canny_image = canny(img)
+skew_corrected_image = deskew(gray)
 
 # Example with no preprocessing
-# print_results(img, "no preprocessing")
+# crop_start(img, "no preprocessing")
 
 
 # # Example with grayscale preprocessing
 # print_results(gray, "grayscale")
+# crop_start(gray, "grayscale")
 
 
 # # Example with noise removal preprocessing
 # print_results(noise_removal_image, "noise removal")
+# crop_start(noise_removal_image, "noise removal")
 
 
 # # Example with threshold preprocessing
 # print_results(threshed_image, "thresholding")
+# crop_start(threshed_image, "thresholding")
 
 
 # # Example with dilation preprocessing
 # print_results(dilation_image, "dilation")
+# crop_start(dilation_image, "dilation")
 
 
 # # Example with erosion preprocessing
 # print_results(erosion_image, "erosion")
+# crop_start(erosion_image, "erosion")
 
 
 # Example with opening preprocessing
 # print_results(opening_image, "opening")
+crop_start(opening_image, "opening")
 
 
 # Example with canny edge detection preprocessing

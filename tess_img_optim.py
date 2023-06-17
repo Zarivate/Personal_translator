@@ -26,6 +26,11 @@ textord_force_make_prop_words=F"""
 chars_remove = [" ", "\n"]
 
 
+# Function to read image
+def set_image(image_path):
+    return cv2.imread(image_path)
+
+
 # Functions to adjust image for better readability
 # get grayscale image
 def get_grayscale(image):
