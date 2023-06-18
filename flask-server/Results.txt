@@ -32,6 +32,7 @@ Dependencies so far:
     - pip install python-dotenv
     - pip install imutils (tutorial here, https://pyimagesearch.com/2015/02/02/just-open-sourced-personal-imutils-package-series-opencv-convenience-functions/ may need to be abandoned)
     - pip install screeninfo
+    - pip install Flask
 
 
 Important Notes:
