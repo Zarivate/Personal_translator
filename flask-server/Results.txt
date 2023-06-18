@@ -27,12 +27,13 @@ Dependencies so far:
     - Tesseract, download guide can be found here https://tesseract-ocr.github.io/tessdoc/Installation.html.
         - Japanese and Vertical Japanese scripts need to be downloaded in window when it pops up
     - pip install pytesseract
-    - pip install cv2
+    - pip install opencv-python
     - pip install --upgrade deepl
     - pip install python-dotenv
     - pip install imutils (tutorial here, https://pyimagesearch.com/2015/02/02/just-open-sourced-personal-imutils-package-series-opencv-convenience-functions/ may need to be abandoned)
     - pip install screeninfo
     - pip install Flask
+    - pip install pyautogui (Could be unnecessary, since may or may not use some functions later)
 
 
 Important Notes:

@@ -2,7 +2,7 @@ import cv2
 import imutils
 from screeninfo import get_monitors
 from tess_img_optim import *
-import pyautogui
+
 
 
 # Function that begins the cropping function if user agrees to
