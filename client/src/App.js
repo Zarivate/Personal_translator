@@ -18,6 +18,7 @@ function App() {
       ) : (
         data.practice.map((number, i) => <p key={i}>{number}</p>)
       )}
+      <input type="file"></input>
     </div>
   );
 }
