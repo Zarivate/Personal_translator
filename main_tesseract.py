@@ -3,7 +3,7 @@ from user_box import *
 
 
 # Test image
-img_path = "examples/example_10.jpg"
+img_path = "examples/example_1.jpg"
 
 img = set_image(img_path)
 # Preprocess the images using the various methods in tess_img_optim for greater accuracy
