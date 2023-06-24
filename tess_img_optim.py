@@ -5,6 +5,7 @@ from pytesseract import Output
 import cv2
 import numpy as np
 from deepl_api_call import *
+import re
 
 
 # Custom recommended Japanese settings from documentation found here: https://tesseract-ocr.github.io/tessdoc/tess3/ControlParams.html
@@ -93,6 +94,16 @@ def get_tess_string(img):
     for char in chars_remove:
         result = result.replace(char, "")
     return result
+
+
+# Function to clear up whatever the user input as the crops to adjust
+def clear_user_string(input):
+    print("The user input before clearing is " + input)
+
+    input = re.sub(r"\D", "", input)
+
+    print("The user input after edits is " + input)
+    return input
 
 
 def get_tess_data(img):

@@ -2,6 +2,7 @@ import cv2
 import imutils
 from screeninfo import get_monitors
 from tess_img_optim import *
+from multiprocessing.sharedctypes import Value
 
 
 # Function that begins the cropping function if user agrees to
@@ -32,7 +33,6 @@ def get_image_data(img):
     # Get the height, width, and channel. If the channel is 3 then it's an RGB(color) image, else it's grayscale/monochrome
     # https://stackoverflow.com/questions/23660929/how-to-check-whether-a-jpeg-image-is-color-or-gray-scale-using-only-python-stdli
     img_w = img.shape[1]
-    print(img_w)
 
     img_h = img.shape[0]
     monitor = get_monitor_info()
@@ -88,7 +88,7 @@ def get_crops(img):
 
         # Create a window of the cropped image with a name corresponding to which sequential crop it was
 
-        cv2.imshow("crop" + str(crop_number) + ".jpg", img_cropped)
+        cv2.imshow("this_is_crop_number" + str(crop_number) + ".jpg", img_cropped)
 
         # Create and save the cropped image in the example_outputs folder with a corresponding numnbered name
         cv2.imwrite(
@@ -102,27 +102,32 @@ def get_crops(img):
         # Increment the crop number so following, if there is any more, cropped images can be correctly numbered
         crop_number += 1
 
-    adjust_crops(ROIs, crop_number)
     cv2.waitKey(0)
+    adjust_crops(crop_number)
     # Return an array containing the dimensions
     return crop_names
 
 
-def adjust_crops(crops_array, num_crops):
+def adjust_crops(num_crops):
+    print("The number of crops is " + str(num_crops))
     crop_answer = input(
-        "Are you happy with these crops or would you like to adjust them? (y/n): \n"
+        "\nAre you happy with these crops or would you like to adjust them? (y/n): "
     )
 
+    # Until user answers either "y" or "n", will repeat question
+    # TODO: Add user option to skip this whole section if they get tired of being asked for crop adjustments
     while crop_answer.lower() not in ("y", "n"):
-        crop_answer = input("Please enter either y or n to continue: \n")
+        crop_answer = input("\nPlease enter either y or n to continue: \n")
 
+    # If user answers yes, then ask for which crops to adjust
+    # TODO: At moment only works if user has less than 9 crops, have yet to calculate for double digit crops
     if crop_answer == "y":
         crops_to_adjust = input(
-            """Which crops would you like to adjust? Please enter the crop number. \n 
-                                It can be found at the end of the output file in the examples_outputs folder."""
+            """Which crops would you like to adjust? Please enter the crop number.\nIt can be found at the end of the output file name in the examples_outputs folder (IE: 1 2 3):  """
         )
+        clear_user_string(crops_to_adjust)
+        if crops_to_adjust.isnumeric():
+            print(crops_to_adjust)
 
-    while int(crops_to_adjust) < num_crops:
-        """"""
     else:
         return
